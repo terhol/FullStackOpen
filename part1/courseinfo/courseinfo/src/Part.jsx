@@ -1,7 +1,7 @@
-export const Part = (props) => {
+export const Part = ({courseName, exNumber}) => {
     return (
         <p>
-        {props.part} {props.exercises}
+        {courseName} {exNumber}
         </p>
     )
 }
