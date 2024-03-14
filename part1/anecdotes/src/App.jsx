@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Anecdote } from "./Anecdote"
 
 const App = () => {
   const anecdotes = [
@@ -17,21 +18,30 @@ const App = () => {
   const [selected, setSelected] = useState(0)
   const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
 
+  /*const mostVotes =  () => Math.max(...points)*/
+
   const addPoint = (position) => {
   const newPoints = {...points}
   newPoints[position] +=1
   setPoints(newPoints)
   }
 
+  const highestVote = () => {
+    const valueArray = Object.values(points)
+    return valueArray.indexOf(Math.max(...valueArray))
+  }
+
   return (
     <div>
-      {anecdotes[selected]}
-      <p>has {points[selected]} votes</p>
+      <h1>Anecdote of the day</h1>
+     <Anecdote anecdote={anecdotes[selected]} anecdotePoints={points[selected]} />
       <p>
         <button onClick={() => addPoint(selected)}>vote</button>
         <button onClick={() => {setSelected(generateRandomInteger)}}>next anecdote</button>
         </p>
-      {console.log(selected)}
+      <h1>Anecdote with most votes</h1>
+     <Anecdote anecdote={anecdotes[highestVote()]} anecdotePoints={points[highestVote()]} />
+
     </div>
   )
 }
