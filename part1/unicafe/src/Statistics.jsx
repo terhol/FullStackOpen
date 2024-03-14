@@ -3,6 +3,12 @@ export const Statistics = ({good, neutral, bad}) => {
     const total = good + neutral + bad
     const averageScore = (good - bad) / total
     const positiveFeedback = (good / total) * 100
+
+    if(total === 0){
+        return (
+            <div>No feedback given</div>
+        )
+    }
     
     return (
         <>
