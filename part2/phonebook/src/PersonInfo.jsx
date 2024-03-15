@@ -1,8 +1,11 @@
-export const PersonInfo = ({persons}) => {
+export const PersonInfo = ({persons,filteredWord}) => {
 
+    const personsToShow = filteredWord === '' ? persons : persons.filter((person) => (person.name).toLowerCase().includes(filteredWord.toLowerCase()))
+
+    
     return (
         <div>
-            {persons.map((person) => <p key={person.name}>{person.name} {person.number}</p>)}
+            {personsToShow.map((person) => <p key={person.name}>{person.name} {person.number}</p>)}
         </div>
     )
 }
