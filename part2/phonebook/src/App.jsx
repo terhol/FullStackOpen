@@ -3,14 +3,15 @@ import { PersonInfo } from './PersonInfo'
 
 
 function App() {
- const [persons, setPersons] = useState([{name: 'Arto Hellas'}])
+ const [persons, setPersons] = useState([{name: 'Arto Hellas', number: '123-456789'}])
  const [newName, setNewName] = useState('')
+ const [newNumber, setNewNumber] = useState('')
 
  const allNames = persons.map(person => person.name)
 
  const addPerson = (event) => {
   event.preventDefault()
-  const newPerson = {name: newName}
+  const newPerson = {name: newName, number: newNumber}
   if(allNames.includes(newName)){
     alert(`${newName} is already added to phonebook.`)
   }
@@ -25,7 +26,8 @@ function App() {
     <h2>Phonebook</h2>
     <form onSubmit={addPerson}>
       <div>
-        Name: <input value={newName} onChange={(event) => {setNewName(event.target.value)}}/>
+        <p>Name: <input value={newName} onChange={(event) => {setNewName(event.target.value)}}/></p>
+        <p>Number: < input value={newNumber} onChange={(event) => {setNewNumber(event.target.value)}}/></p>
       </div>
       <div>
         <button type='submit'>Add</button>
