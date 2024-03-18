@@ -6,10 +6,9 @@ export const PersonInfo = ({ persons, filteredWord }) => {
 
   return (
     <div>
-      {/* TODO: personsToShow.map(({ name, number }) => ( */}
-      {personsToShow.map((person) => (
-        <p key={person.name}>
-          {person.name} {person.number}
+      {personsToShow.map(({ name, number }) => (
+        <p key={name}>
+          {name} {number}
         </p>
       ))}
     </div>
