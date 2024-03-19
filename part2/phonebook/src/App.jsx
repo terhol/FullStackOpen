@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { PersonInfo } from './PersonInfo'
 import { Filter } from './Filter'
 import { AddContact } from './AddContact'
-import axios from 'axios'
+import { getAll } from './services/PersonService'
 
 function App() {
   const [newName, setNewName] = useState('')
@@ -11,9 +11,7 @@ function App() {
   const [persons, setPersons] = useState([])
 
   useEffect(() => {
-    axios.get('http://localhost:3001/persons').then((response) => {
-      setPersons(response.data)
-    })
+    getAll().then((responseData) => setPersons(responseData))
   }, [])
 
   return (

@@ -1,3 +1,5 @@
+import { addPerson as addPersonService } from './services/PersonService'
+
 export const AddContact = ({
   newName,
   newNumber,
@@ -8,13 +10,14 @@ export const AddContact = ({
 }) => {
   const allNames = persons.map((person) => person.name)
 
-  const addPerson = (event) => {
+  const addPerson = async (event) => {
     event.preventDefault()
     const newPerson = { name: newName, number: newNumber }
     if (allNames.includes(newName)) {
       alert(`${newName} is already added to phonebook.`)
     } else {
-      setPersons([...persons, newPerson])
+      const responseData = await addPersonService(newPerson)
+      setPersons([...persons, responseData])
     }
     setNewName('')
     setNewNumber('')
