@@ -30,7 +30,7 @@ function App() {
       />
 
       <h3>Numbers</h3>
-      <PersonInfo persons={persons} filteredWord={filteredWord} />
+      <PersonInfo persons={persons} filteredWord={filteredWord} setPersons={setPersons} />
     </div>
   )
 }
