@@ -1,4 +1,7 @@
-import { addPerson as addPersonService } from './services/PersonService'
+import {
+  addPerson as addPersonService,
+  updateNumber as updateNumberService,
+} from './services/PersonService'
 
 export const AddContact = ({
   newName,
@@ -14,13 +17,29 @@ export const AddContact = ({
     event.preventDefault()
     const newPerson = { name: newName, number: newNumber }
     if (allNames.includes(newName)) {
-      alert(`${newName} is already added to phonebook.`)
+      updateNumber(newPerson)
     } else {
       const responseData = await addPersonService(newPerson)
       setPersons([...persons, responseData])
     }
     setNewName('')
     setNewNumber('')
+  }
+
+  const updateNumber = (newPerson) => {
+    if (
+      window.confirm(
+        `${newPerson.name} is already added to phonebook, replace the old number with a new one?`,
+      )
+    ) {
+      const personToChange = persons.find((person) => person.name === newPerson.name)
+      const updatedPerson = { ...personToChange, number: newNumber }
+      updateNumberService(personToChange.id, updatedPerson).then((responseData) =>
+        setPersons(
+          persons.map((person) => (person.id !== responseData.id ? person : responseData)),
+        ),
+      )
+    }
   }
 
   return (
@@ -41,7 +60,6 @@ export const AddContact = ({
             <input
               value={newNumber}
               onChange={(event) => {
-                // TODO: try and understand, what is doing onChange={setNewNumber}
                 setNewNumber(event.target.value)
               }}
             />
