@@ -10,8 +10,8 @@ export const AddContact = ({
   setNewNumber,
   persons,
   setPersons,
-  notificationMessage,
   setNotificationMessage,
+  setIsError,
 }) => {
   const allNames = persons.map((person) => person.name)
 
@@ -23,6 +23,7 @@ export const AddContact = ({
     } else {
       const responseData = await addPersonService(newPerson)
       setPersons([...persons, responseData])
+      setIsError(false)
       setNotificationMessage(`Added ${responseData.name}`)
       setTimeout(() => {
         setNotificationMessage(null)
@@ -40,11 +41,23 @@ export const AddContact = ({
     ) {
       const personToChange = persons.find((person) => person.name === newPerson.name)
       const updatedPerson = { ...personToChange, number: newNumber }
-      updateNumberService(personToChange.id, updatedPerson).then((responseData) =>
-        setPersons(
-          persons.map((person) => (person.id !== responseData.id ? person : responseData)),
-        ),
-      )
+      updateNumberService(personToChange.id, updatedPerson)
+        .then((responseData) =>
+          setPersons(
+            persons.map((person) => (person.id !== responseData.id ? person : responseData)),
+          ),
+        )
+        .catch((error) => {
+          setIsError(true)
+          setNotificationMessage(
+            `Information of ${updatedPerson.name} has already been removed from server.`,
+          )
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
+        })
+
+      setIsError(false)
       setNotificationMessage(`Changed number for ${updatedPerson.name}.`)
       setTimeout(() => {
         setNotificationMessage(null)

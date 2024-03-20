@@ -1,4 +1,4 @@
-export const Notification = ({ message }) => {
+export const Notification = ({ message, isError }) => {
   if (message === null) {
     return null
   }
@@ -12,5 +12,9 @@ export const Notification = ({ message }) => {
     marginBottom: 10,
   }
 
-  return <div style={notificationStyle}>{message}</div>
+  return (
+    <div style={isError ? { ...notificationStyle, color: 'red' } : notificationStyle}>
+      {message}
+    </div>
+  )
 }

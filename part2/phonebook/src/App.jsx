@@ -11,6 +11,7 @@ function App() {
   const [filteredWord, setFilteredWord] = useState('')
   const [persons, setPersons] = useState([])
   const [notificationMessage, setNotificationMessage] = useState(null)
+  const [isError, setIsError] = useState(false)
 
   useEffect(() => {
     getAll().then((responseData) => setPersons(responseData))
@@ -19,7 +20,7 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notificationMessage} />
+      <Notification message={notificationMessage} isError={isError} />
       <Filter filteredWord={filteredWord} setFilteredWord={setFilteredWord} />
 
       <h3>Add new contact</h3>
@@ -30,8 +31,8 @@ function App() {
         setNewNumber={setNewNumber}
         persons={persons}
         setPersons={setPersons}
-        notificationMessage={notificationMessage}
         setNotificationMessage={setNotificationMessage}
+        setIsError={setIsError}
       />
 
       <h3>Numbers</h3>
