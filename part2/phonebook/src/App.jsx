@@ -3,12 +3,14 @@ import { PersonInfo } from './PersonInfo'
 import { Filter } from './Filter'
 import { AddContact } from './AddContact'
 import { getAll } from './services/PersonService'
+import { Notification } from './Notification'
 
 function App() {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filteredWord, setFilteredWord] = useState('')
   const [persons, setPersons] = useState([])
+  const [notificationMessage, setNotificationMessage] = useState(null)
 
   useEffect(() => {
     getAll().then((responseData) => setPersons(responseData))
@@ -17,6 +19,7 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notificationMessage} />
       <Filter filteredWord={filteredWord} setFilteredWord={setFilteredWord} />
 
       <h3>Add new contact</h3>
@@ -27,6 +30,8 @@ function App() {
         setNewNumber={setNewNumber}
         persons={persons}
         setPersons={setPersons}
+        notificationMessage={notificationMessage}
+        setNotificationMessage={setNotificationMessage}
       />
 
       <h3>Numbers</h3>

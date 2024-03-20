@@ -10,6 +10,8 @@ export const AddContact = ({
   setNewNumber,
   persons,
   setPersons,
+  notificationMessage,
+  setNotificationMessage,
 }) => {
   const allNames = persons.map((person) => person.name)
 
@@ -21,6 +23,10 @@ export const AddContact = ({
     } else {
       const responseData = await addPersonService(newPerson)
       setPersons([...persons, responseData])
+      setNotificationMessage(`Added ${responseData.name}`)
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000)
     }
     setNewName('')
     setNewNumber('')
@@ -39,6 +45,10 @@ export const AddContact = ({
           persons.map((person) => (person.id !== responseData.id ? person : responseData)),
         ),
       )
+      setNotificationMessage(`Changed number for ${updatedPerson.name}.`)
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000)
     }
   }
 
