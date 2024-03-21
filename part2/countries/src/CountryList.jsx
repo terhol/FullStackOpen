@@ -1,6 +1,6 @@
 import { Country } from './Country'
 
-const CountryList = ({ countries }) => {
+const CountryList = ({ countries, setSearchedCountry }) => {
   if (countries.length > 10) {
     return <div>Too many matches, specify another filter.</div>
   }
@@ -10,7 +10,12 @@ const CountryList = ({ countries }) => {
     return (
       <ul>
         {countries.map((country) => {
-          return <li key={country.name.official}>{country.name.common}</li>
+          return (
+            <li key={country.name.official}>
+              {country.name.common}{' '}
+              <button onClick={() => setSearchedCountry(country.name.common)}>Show</button>
+            </li>
+          )
         })}
       </ul>
     )

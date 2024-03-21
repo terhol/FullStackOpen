@@ -19,7 +19,7 @@ function App() {
   return (
     <div>
       <SearchCountry searchedCountry={searchedCountry} setSearchedCountry={setSearchedCountry} />
-      <CountryList countries={selectedCountries} />
+      <CountryList countries={selectedCountries} setSearchedCountry={setSearchedCountry} />
     </div>
   )
 }

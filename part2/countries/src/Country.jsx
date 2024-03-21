@@ -1,3 +1,5 @@
+import './index.css'
+
 const Country = ({ selectedCountry }) => {
   const finalLanguageList = (languageList) => {
     const allLanguages = Object.values(languageList)
@@ -12,7 +14,11 @@ const Country = ({ selectedCountry }) => {
       <h4>Languages:</h4>
       {finalLanguageList(selectedCountry.languages)}
       <p>
-        <img src={selectedCountry.flags.png} alt={selectedCountry.flags.alt} />
+        <img
+          src={selectedCountry.flags.png}
+          alt={selectedCountry.flags.alt}
+          className="centerImage"
+        />
       </p>
       <ul></ul>
     </div>
