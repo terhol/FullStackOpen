@@ -3,6 +3,8 @@ import { getAll } from './service/CountryService.js'
 import { CountryList } from './CountryList.jsx'
 import { SearchCountry } from './SearchCountry.jsx'
 
+import '../styles/global.css'
+
 function App() {
   const [countries, setCountries] = useState([])
   const [searchedCountry, setSearchedCountry] = useState('')

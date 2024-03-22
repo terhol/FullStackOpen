@@ -2,8 +2,9 @@ const SearchCountry = ({ searchedCountry, setSearchedCountry }) => {
   return (
     <div>
       <form>
-        Find countries
+        <label htmlFor="country">Find countries</label>
         <input
+          id="country"
           value={searchedCountry}
           onChange={(event) => {
             setSearchedCountry(event.target.value)
