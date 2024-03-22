@@ -33,3 +33,10 @@ app.get(baseURL, (request, response) => {
   console.log('App get function')
   response.json(entries)
 })
+
+app.get('/info', (request, response) => {
+  response.set('Content-Type', 'text/html')
+  response.send(
+    `<div>Phonebook has info for ${entries.length} people.</div><br></br><div>${new Date()}</div>`,
+  )
+})
