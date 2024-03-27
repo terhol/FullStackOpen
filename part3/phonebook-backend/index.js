@@ -56,3 +56,19 @@ app.delete(`${baseURL}/:id`, (request, response) => {
 
   response.status(204).end()
 })
+
+app.post(`${baseURL}`, (request, response) => {
+  const content = request.body
+
+  if (!content.name || !content.number) {
+    response.status(400).json({ error: 'Name or phone number is missing.' })
+  }
+
+  const newName = {
+    id: Math.floor(Math.random() * 1000),
+    name: content.name,
+    number: content.number,
+  }
+  entries = [...entries, newName]
+  response.json(newName)
+})
