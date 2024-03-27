@@ -40,3 +40,13 @@ app.get('/info', (request, response) => {
     `<div>Phonebook has info for ${entries.length} people.</div><br></br><div>${new Date()}</div>`,
   )
 })
+
+app.get(`${baseURL}/:id`, (request, response) => {
+  const id = Number(request.params.id)
+  const person = entries.find((entry) => entry.id === id)
+  if (person) {
+    response.json(person)
+  } else {
+    response.status(404).end()
+  }
+})
