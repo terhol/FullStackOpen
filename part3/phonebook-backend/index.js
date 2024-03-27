@@ -30,7 +30,6 @@ let entries = [
 ]
 
 app.get(baseURL, (request, response) => {
-  console.log('App get function')
   response.json(entries)
 })
 
@@ -49,4 +48,11 @@ app.get(`${baseURL}/:id`, (request, response) => {
   } else {
     response.status(404).end()
   }
+})
+
+app.delete(`${baseURL}/:id`, (request, response) => {
+  const id = Number(request.params.id)
+  entries = entries.filter((entry) => entry.id !== id)
+
+  response.status(204).end()
 })
