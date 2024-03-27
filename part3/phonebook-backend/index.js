@@ -64,11 +64,20 @@ app.post(`${baseURL}`, (request, response) => {
     response.status(400).json({ error: 'Name or phone number is missing.' })
   }
 
-  const newName = {
-    id: Math.floor(Math.random() * 1000),
-    name: content.name,
-    number: content.number,
+  const indexOfName = entries.map((entry) => entry.name).indexOf(content.name)
+  console.log(indexOfName)
+  if (indexOfName !== -1) {
+    response
+      .status(400)
+      .json({ error: 'Name already exists in phonebook. All names must be unique.' })
+      .end()
+  } else {
+    const newName = {
+      id: Math.floor(Math.random() * 1000),
+      name: content.name,
+      number: content.number,
+    }
+    entries = [...entries, newName]
+    response.json(newName)
   }
-  entries = [...entries, newName]
-  response.json(newName)
 })
