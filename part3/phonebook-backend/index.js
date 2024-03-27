@@ -1,8 +1,13 @@
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
+morgan.token('body', (request, response) => JSON.stringify(request.body))
 app.use(express.json())
-app.use(morgan('tiny'))
+app.use(
+  morgan(
+    ':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]',
+  ),
+)
 
 const PORT = 3001
 const baseURL = '/api/persons'
@@ -67,7 +72,6 @@ app.post(`${baseURL}`, (request, response) => {
   }
 
   const indexOfName = entries.map((entry) => entry.name).indexOf(content.name)
-  console.log(indexOfName)
   if (indexOfName !== -1) {
     response
       .status(400)
