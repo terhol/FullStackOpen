@@ -10,6 +10,7 @@ app.use(
 )
 const cors = require('cors')
 app.use(cors())
+app.use(express.static('dist'))
 
 const PORT = process.env.PORT || 3001
 const baseURL = '/api/persons'
