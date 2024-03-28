@@ -8,6 +8,8 @@ app.use(
     ':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]',
   ),
 )
+const cors = require('cors')
+app.use(cors())
 
 const PORT = 3001
 const baseURL = '/api/persons'
