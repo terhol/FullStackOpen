@@ -42,7 +42,9 @@ let entries = [
 ]
 
 app.get(baseURL, (request, response) => {
-  response.json(entries)
+  Person.find({}).then((persons) => {
+    response.json(persons)
+  })
 })
 
 app.get('/info', (request, response) => {
@@ -53,13 +55,21 @@ app.get('/info', (request, response) => {
 })
 
 app.get(`${baseURL}/:id`, (request, response) => {
-  const id = Number(request.params.id)
+  Person.findById(request.params.id)
+    .then((person) => {
+      response.json(person)
+    })
+    .catch((error) => {
+      console.log('Could not find person with id', request.params.id)
+    })
+
+  /*const id = Number(request.params.id)
   const person = entries.find((entry) => entry.id === id)
   if (person) {
     response.json(person)
   } else {
     response.status(404).end()
-  }
+  }*/
 })
 
 app.delete(`${baseURL}/:id`, (request, response) => {
