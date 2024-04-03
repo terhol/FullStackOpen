@@ -62,14 +62,6 @@ app.get(`${baseURL}/:id`, (request, response) => {
     .catch((error) => {
       console.log('Could not find person with id', request.params.id)
     })
-
-  /*const id = Number(request.params.id)
-  const person = entries.find((entry) => entry.id === id)
-  if (person) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }*/
 })
 
 app.delete(`${baseURL}/:id`, (request, response) => {
@@ -80,25 +72,19 @@ app.delete(`${baseURL}/:id`, (request, response) => {
 })
 
 app.post(`${baseURL}`, (request, response) => {
-  const content = request.body
+  const body = request.body
 
-  if (!content.name || !content.number) {
-    response.status(400).json({ error: 'Name or phone number is missing.' })
+  if (body.name === undefined || body.number === undefined) {
+    return response.status(400).json({
+      error: 'Content missing',
+    })
   }
+  const person = new Person({
+    name: body.name,
+    number: body.number,
+  })
 
-  const indexOfName = entries.map((entry) => entry.name).indexOf(content.name)
-  if (indexOfName !== -1) {
-    response
-      .status(400)
-      .json({ error: 'Name already exists in phonebook. All names must be unique.' })
-      .end()
-  } else {
-    const newName = {
-      id: Math.floor(Math.random() * 1000),
-      name: content.name,
-      number: content.number,
-    }
-    entries = [...entries, newName]
-    response.json(newName)
-  }
+  person.save().then((savedPerson) => {
+    response.json(savedPerson)
+  })
 })
