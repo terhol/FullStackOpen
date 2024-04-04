@@ -78,31 +78,30 @@ app.delete(`${baseURL}/:id`, (request, response, next) => {
     .catch((error) => next(error))
 })
 
-app.post(`${baseURL}`, (request, response) => {
+app.post(`${baseURL}`, (request, response, next) => {
   const body = request.body
 
-  if (body.name === undefined || body.number === undefined) {
-    return response.status(400).json({
-      error: 'Content missing',
-    })
-  }
   const person = new Person({
     name: body.name,
     number: body.number,
   })
 
-  person.save().then((savedPerson) => {
-    response.json(savedPerson)
-  })
+  person
+    .save()
+    .then((savedPerson) => {
+      response.json(savedPerson)
+    })
+    .catch((error) => next(error))
 })
 
 app.put(`${baseURL}/:id`, (request, response, next) => {
-  const body = request.body
-  const update = {
-    name: body.name,
-    number: body.number,
-  }
-  Person.findByIdAndUpdate(request.params.id, update, { new: true })
+  const { name, number } = request.body
+
+  Person.findByIdAndUpdate(
+    request.params.id,
+    { name, number },
+    { new: true, runValidators: true, context: 'query' },
+  )
     .then((updatedPerson) => {
       response.json(updatedPerson)
     })
@@ -113,6 +112,10 @@ const errorHandler = (error, request, response, next) => {
   console.error(error.message)
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'Malformated id.' })
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
+  } else if (error.name === 'TypeError') {
+    return response.status(400).json({ error: error.message })
   }
   next(error)
 }

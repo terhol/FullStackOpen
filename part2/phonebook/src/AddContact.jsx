@@ -18,19 +18,30 @@ export const AddContact = ({
   const addPerson = async (event) => {
     event.preventDefault()
     const newPerson = { name: newName, number: newNumber }
+
     if (allNames.includes(newName)) {
       updateNumber(newPerson)
     } else {
       const responseData = await addPersonService(newPerson)
-      setPersons([...persons, responseData])
-      setIsError(false)
-      setNotificationMessage(`Added ${responseData.name}`)
-      setTimeout(() => {
-        setNotificationMessage(null)
-      }, 5000)
+        .then((response) => {
+          setPersons([...persons, responseData])
+          setIsError(false)
+          setNotificationMessage(`Added ${responseData.name}`)
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
+        })
+        .catch((error) => {
+          setIsError(true)
+          setNotificationMessage(`Error: ${error.response.data.error}`)
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
+          console.log(error.response.data.error)
+        })
+      setNewName('')
+      setNewNumber('')
     }
-    setNewName('')
-    setNewNumber('')
   }
 
   const updateNumber = (newPerson) => {
