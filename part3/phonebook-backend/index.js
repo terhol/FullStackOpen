@@ -54,21 +54,26 @@ app.get('/info', (request, response) => {
   )
 })
 
-app.get(`${baseURL}/:id`, (request, response) => {
+app.get(`${baseURL}/:id`, (request, response, next) => {
   Person.findById(request.params.id)
     .then((person) => {
-      response.json(person)
+      if (person) {
+        response.json(person)
+      } else {
+        response.status(404).end()
+      }
     })
     .catch((error) => {
-      console.log('Could not find person with id', request.params.id)
+      next(error)
     })
 })
 
-app.delete(`${baseURL}/:id`, (request, response) => {
-  const id = Number(request.params.id)
-  entries = entries.filter((entry) => entry.id !== id)
-
-  response.status(204).end()
+app.delete(`${baseURL}/:id`, (request, response, next) => {
+  Person.findByIdAndDelete(request.params.id)
+    .then((result) => {
+      response.status(204).end()
+    })
+    .catch((error) => next(error))
 })
 
 app.post(`${baseURL}`, (request, response) => {
@@ -88,3 +93,10 @@ app.post(`${baseURL}`, (request, response) => {
     response.json(savedPerson)
   })
 })
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+  next(error)
+}
+
+app.use(errorHandler)
