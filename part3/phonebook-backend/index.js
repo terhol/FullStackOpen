@@ -94,6 +94,19 @@ app.post(`${baseURL}`, (request, response) => {
   })
 })
 
+app.put(`${baseURL}/:id`, (request, response, next) => {
+  const body = request.body
+  const update = {
+    name: body.name,
+    number: body.number,
+  }
+  Person.findByIdAndUpdate(request.params.id, update, { new: true })
+    .then((updatedPerson) => {
+      response.json(updatedPerson)
+    })
+    .catch((error) => next(error))
+})
+
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
   next(error)
