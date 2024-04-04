@@ -18,7 +18,7 @@ const PORT = process.env.PORT
 const baseURL = '/api/persons'
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
 
-let entries = [
+/*let entries = [
   {
     id: 1,
     name: 'Arto Hellas',
@@ -39,7 +39,7 @@ let entries = [
     name: 'Mary Poppendieck',
     number: '39-23-642312',
   },
-]
+]*/
 
 app.get(baseURL, (request, response) => {
   Person.find({}).then((persons) => {
@@ -47,10 +47,12 @@ app.get(baseURL, (request, response) => {
   })
 })
 
-app.get('/info', (request, response) => {
+app.get('/info', async (request, response) => {
+  const peopleCount = await Person.countDocuments()
+  console.log(peopleCount)
   response.set('Content-Type', 'text/html')
   response.send(
-    `<div>Phonebook has info for ${entries.length} people.</div><br></br><div>${new Date()}</div>`,
+    `<div>Phonebook has info for ${peopleCount} people.</div><br></br><div>${new Date()}</div>`,
   )
 })
 
@@ -109,6 +111,9 @@ app.put(`${baseURL}/:id`, (request, response, next) => {
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'Malformated id.' })
+  }
   next(error)
 }
 
