@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   addPerson as addPersonService,
   updateNumber as updateNumberService,
@@ -23,6 +24,7 @@ export const AddContact = ({
       updateNumber(newPerson)
     } else {
       const responseData = await addPersonService(newPerson)
+        // eslint-disable-next-line no-unused-vars
         .then((response) => {
           setPersons([...persons, responseData])
           setIsError(false)
@@ -58,6 +60,7 @@ export const AddContact = ({
             persons.map((person) => (person.id !== responseData.id ? person : responseData)),
           ),
         )
+        // eslint-disable-next-line no-unused-vars
         .catch((error) => {
           setIsError(true)
           setNotificationMessage(
