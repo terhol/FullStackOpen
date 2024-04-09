@@ -62,3 +62,30 @@ describe('mostBlogs', () => {
     assert.deepStrictEqual(listHelper.mostBlogs([]), { author: undefined, blogs: 0 })
   })
 })
+
+describe('mostLikes', () => {
+  test('of a bigger list correct author', () => {
+    assert.deepStrictEqual(listHelper.mostLikes(testBlogs), { author: 'Author 2', likes: 1000 })
+  })
+  test('of a bigger list correct author is returned while adding up', () => {
+    assert.deepStrictEqual(
+      listHelper.mostLikes(testBlogs.concat({ author: 'Author 2', likes: 100 })),
+      {
+        author: 'Author 2',
+        likes: 1100,
+      },
+    )
+  })
+  test('of one blog the only author is returned', () => {
+    assert.deepStrictEqual(listHelper.mostLikes([].concat(testBlog)), {
+      author: 'Author 1',
+      likes: 10,
+    })
+  })
+  test('of no blog correct info is returned', () => {
+    assert.deepStrictEqual(listHelper.mostLikes([]), {
+      author: '',
+      likes: 0,
+    })
+  })
+})

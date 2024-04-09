@@ -32,9 +32,29 @@ const mostBlogs = (blogs) => {
   }
 }
 
+const mostLikes = (blogs) => {
+  const authors = _.uniq(_.map(blogs, 'author'))
+  let highestLikeNumber = 0
+  let highestLikeAuthor = ''
+  authors.forEach((author) => {
+    let likes = 0
+    blogs.forEach((blog) => {
+      if (blog.author === author) {
+        likes += blog.likes
+      }
+    })
+    if (likes > highestLikeNumber) {
+      highestLikeNumber = likes
+      highestLikeAuthor = author
+    }
+  })
+  return { author: highestLikeAuthor, likes: highestLikeNumber }
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 }
