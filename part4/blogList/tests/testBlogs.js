@@ -13,7 +13,7 @@ const testBlogs = [
   },
   {
     title: 'Blog 3',
-    author: 'Author 3',
+    author: 'Author 1',
     url: 'Url 3',
     likes: 5,
   },
