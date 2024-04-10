@@ -34,6 +34,26 @@ test('id is correctly named', async () => {
   assert.strictEqual(Object.hasOwn(blog, 'id'), true)
 })
 
+test('new blog is added correctly', async () => {
+  const newBlog = {
+    author: 'New author',
+    title: 'New title',
+    url: 'New url',
+    likes: 5,
+  }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
+
+  const contents = blogsAtEnd.map((r) => r.author)
+  assert.strictEqual(contents.includes(newBlog.author), true)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
