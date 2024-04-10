@@ -28,6 +28,12 @@ test('correct number of blogs is returned', async () => {
   assert.strictEqual(response.body.length, helper.initialBlogs.length)
 })
 
+test('id is correctly named', async () => {
+  const response = await api.get('/api/blogs')
+  const blog = response.body[0]
+  assert.strictEqual(Object.hasOwn(blog, 'id'), true)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
