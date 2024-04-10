@@ -54,6 +54,20 @@ test('new blog is added correctly', async () => {
   assert.strictEqual(contents.includes(newBlog.author), true)
 })
 
+test('if likes property is missing 0 is returned', async () => {
+  const newBlog = {
+    author: 'New author',
+    title: 'New title',
+    url: 'New url',
+  }
+  await api.post('/api/blogs').send(newBlog).expect(201)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  const newlyAddedBlog = blogsAtEnd.filter((blog) => blog.author === newBlog.author)
+
+  assert.strictEqual(newlyAddedBlog[0].likes, 0)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
