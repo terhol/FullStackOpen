@@ -68,6 +68,24 @@ test('if likes property is missing 0 is returned', async () => {
   assert.strictEqual(newlyAddedBlog[0].likes, 0)
 })
 
+test('if title is missing, status 400 is returned', async () => {
+  const newBlog = {
+    author: 'New author',
+    url: 'New url',
+    likes: 10,
+  }
+  await api.post('/api/blogs').send(newBlog).expect(400)
+})
+
+test('if url is missing, status 400 is returned', async () => {
+  const newBlog = {
+    author: 'New author',
+    title: 'New title',
+    likes: 10,
+  }
+  await api.post('/api/blogs').send(newBlog).expect(400)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
