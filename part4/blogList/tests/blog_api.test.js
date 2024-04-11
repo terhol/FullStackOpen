@@ -99,6 +99,24 @@ describe('API tests', () => {
     assert(!blogsAtEnd.map((blog) => blog.title).includes(validBlog.title))
   })
 
+  test('existing blog can be updated correctly', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+
+    const newBlog = {
+      likes: 12345,
+      author: 'New Author',
+      url: 'New url',
+      title: 'New title',
+    }
+    await api.put(`/api/blogs/${blogToUpdate.id}`).send(newBlog)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    console.log(blogsAtEnd.map((blog) => blog.likes))
+
+    assert(blogsAtEnd.map((blog) => blog.likes).includes(12345))
+  })
+
   after(async () => {
     await mongoose.connection.close()
   })
