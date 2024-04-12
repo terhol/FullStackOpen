@@ -150,6 +150,62 @@ describe('API tests', () => {
       const usernames = usersAtEnd.map((user) => user.username)
       assert(usernames.includes(newUser.username))
     })
+    test('creation fails with proper status code is username is too short', async () => {
+      const usersAtStart = await helper.usersInDb()
+
+      const userWithShortUsername = {
+        username: 'a',
+        name: 'new name',
+        password: 'password',
+      }
+
+      const result = await api
+        .post('/api/users')
+        .send(userWithShortUsername)
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
+
+      const usersAtEnd = await helper.usersInDb()
+      assert(result.body.error.includes('User validation failed'))
+      assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+    })
+    test('creation fails with proper status code is password is missing', async () => {
+      const usersAtStart = await helper.usersInDb()
+
+      const userWithoutPassword = {
+        username: 'admin',
+        name: 'new name',
+      }
+
+      const result = await api
+        .post('/api/users')
+        .send(userWithoutPassword)
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
+
+      const usersAtEnd = await helper.usersInDb()
+      assert(result.body.error.includes('Password is missing or is too short.'))
+      assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+    })
+    test('creation fails with proper status code is username is not unique', async () => {
+      const usersAtStart = await helper.usersInDb()
+
+      const userWithRepeatingUsername = {
+        username: 'root',
+        name: 'new name',
+        password: 'password',
+      }
+
+      const result = await api
+        .post('/api/users')
+        .send(userWithRepeatingUsername)
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
+
+      const usersAtEnd = await helper.usersInDb()
+      assert(result.body.error.includes('Username needs to be unique'))
+      assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+    })
   })
 
   after(async () => {
