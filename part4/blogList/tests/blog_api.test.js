@@ -5,8 +5,10 @@ const app = require('../app')
 const api = supertest(app)
 const helper = require('./test_helper')
 const assert = require('node:assert')
+const bcrypt = require('bcrypt')
 
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 describe('API tests', () => {
   beforeEach(async () => {
@@ -115,6 +117,39 @@ describe('API tests', () => {
     console.log(blogsAtEnd.map((blog) => blog.likes))
 
     assert(blogsAtEnd.map((blog) => blog.likes).includes(12345))
+  })
+
+  describe('when there is initially one user in db', () => {
+    beforeEach(async () => {
+      await User.deleteMany({})
+
+      const passwordHash = await bcrypt.hash('secret', 10)
+      const user = new User({ username: 'root', passwordHash })
+
+      await user.save()
+    })
+
+    test('creation succeeds with fresh username', async () => {
+      const usersAtStart = await helper.usersInDb()
+
+      const newUser = {
+        username: 'new user',
+        name: 'new name',
+        password: 'password',
+      }
+
+      await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+      const usersAtEnd = await helper.usersInDb()
+      assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1)
+
+      const usernames = usersAtEnd.map((user) => user.username)
+      assert(usernames.includes(newUser.username))
+    })
   })
 
   after(async () => {
