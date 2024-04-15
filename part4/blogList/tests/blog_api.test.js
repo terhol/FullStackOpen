@@ -9,6 +9,7 @@ const bcrypt = require('bcrypt')
 
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const { log } = require('node:console')
 let tokenNr = ''
 
 describe('API tests', () => {
@@ -105,8 +106,11 @@ describe('API tests', () => {
   test('existing blog is deleted correctly', async () => {
     const blogsAtStart = await helper.blogsInDb()
     const validBlog = blogsAtStart[0]
+    const users = await helper.usersInDb()
+    validBlog.user = users[0].id
+    await api.put(`/api/blogs/${validBlog.id}`).send(validBlog).expect(200)
 
-    await api.delete(`/api/blogs/${validBlog.id}`).expect(204)
+    await api.delete(`/api/blogs/${validBlog.id}`).set('Authorization', tokenNr).expect(204)
 
     blogsAtEnd = await helper.blogsInDb()
 
@@ -127,7 +131,6 @@ describe('API tests', () => {
     await api.put(`/api/blogs/${blogToUpdate.id}`).send(newBlog)
 
     const blogsAtEnd = await helper.blogsInDb()
-    console.log(blogsAtEnd.map((blog) => blog.likes))
 
     assert(blogsAtEnd.map((blog) => blog.likes).includes(12345))
   })

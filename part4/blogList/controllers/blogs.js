@@ -41,11 +41,11 @@ blogsRouter.delete('/:id', async (request, response) => {
 })
 
 blogsRouter.put('/:id', async (request, response) => {
-  const { author, title, url, likes } = request.body
+  const { author, title, url, likes, user } = request.body
 
   const result = await Blog.findByIdAndUpdate(
     request.params.id,
-    { author, title, url, likes },
+    { author, title, url, likes, user },
     {
       new: true,
       runValidators: true,
