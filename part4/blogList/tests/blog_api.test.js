@@ -9,6 +9,7 @@ const bcrypt = require('bcrypt')
 
 const Blog = require('../models/blog')
 const User = require('../models/user')
+let tokenNr = ''
 
 describe('API tests', () => {
   beforeEach(async () => {
@@ -17,6 +18,16 @@ describe('API tests', () => {
     const blogsObject = helper.initialBlogs.map((blog) => new Blog(blog))
     const promiseArray = blogsObject.map((blog) => blog.save())
     await Promise.all(promiseArray)
+
+    await User.deleteMany({})
+
+    const passwordHash = await bcrypt.hash('secret', 10)
+    const user = new User({ username: 'root', passwordHash })
+
+    await user.save()
+
+    const tokenInfo = await api.post('/api/login').send({ username: 'root', password: 'secret' })
+    tokenNr = `Bearer ${tokenInfo._body.token}`
   })
 
   test('blogs are returned as json', async () => {
@@ -44,9 +55,11 @@ describe('API tests', () => {
       url: 'New url',
       likes: 5,
     }
+
     await api
       .post('/api/blogs')
       .send(newBlog)
+      .set('Authorization', tokenNr)
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
@@ -63,7 +76,7 @@ describe('API tests', () => {
       title: 'New title',
       url: 'New url',
     }
-    await api.post('/api/blogs').send(newBlog).expect(201)
+    await api.post('/api/blogs').set('Authorization', tokenNr).send(newBlog).expect(201)
 
     const blogsAtEnd = await helper.blogsInDb()
     const newlyAddedBlog = blogsAtEnd.filter((blog) => blog.author === newBlog.author)
@@ -77,7 +90,7 @@ describe('API tests', () => {
       url: 'New url',
       likes: 10,
     }
-    await api.post('/api/blogs').send(newBlog).expect(400)
+    await api.post('/api/blogs').set('Authorization', tokenNr).send(newBlog).expect(400)
   })
 
   test('if url is missing, status 400 is returned', async () => {
@@ -86,7 +99,7 @@ describe('API tests', () => {
       title: 'New title',
       likes: 10,
     }
-    await api.post('/api/blogs').send(newBlog).expect(400)
+    await api.post('/api/blogs').set('Authorization', tokenNr).send(newBlog).expect(400)
   })
 
   test('existing blog is deleted correctly', async () => {
