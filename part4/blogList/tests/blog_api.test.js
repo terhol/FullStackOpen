@@ -71,6 +71,20 @@ describe('API tests', () => {
     assert.strictEqual(contents.includes(newBlog.author), true)
   })
 
+  test('if authorization fails, response 401 is returned', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const newBlog = {
+      author: 'New author',
+      title: 'New title',
+      url: 'New url',
+      likes: 5,
+    }
+
+    await api.post('/api/blogs').send(newBlog).expect(401)
+    const blogsAtEnd = await helper.blogsInDb()
+    assert.equal(blogsAtStart.length, blogsAtEnd.length)
+  })
+
   test('if likes property is missing 0 is returned', async () => {
     const newBlog = {
       author: 'New author',
