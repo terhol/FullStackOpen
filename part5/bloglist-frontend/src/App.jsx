@@ -46,7 +46,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className="pure-g">
       {user === null ? (
         <LoginForm
           handleLogin={handleLogin}
