@@ -1,0 +1,14 @@
+.formFields {
+  display: flex;
+  flex-direction: column;
+}
+
+.formFields > .formField {
+  display: flex;
+  margin: 5px 0;
+  /* flex: 1 1 0; */
+}
+
+.formFields > .formField > div:first-child {
+  flex: 70px 0 0;
+}

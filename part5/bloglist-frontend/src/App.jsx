@@ -3,6 +3,7 @@ import blogService from './services/blogs'
 import { LoginForm } from './components/LoginForm'
 import { logToApp } from './services/login'
 import { BlogPage } from './components/BlogPage'
+import { setToken } from './services/blogs'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -19,6 +20,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
+      setToken(user.token)
     }
   }, [])
 
@@ -28,6 +30,7 @@ const App = () => {
       const user = await logToApp({ username, password })
 
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+      setToken(user.token)
       setUser(user)
       setPassword('')
       setUsername('')
