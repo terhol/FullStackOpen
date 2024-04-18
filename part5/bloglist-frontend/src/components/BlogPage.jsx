@@ -2,7 +2,7 @@ import blogs from '../services/blogs'
 import Blog from './Blog'
 import { CreateBlog } from './CreateBlog'
 
-export const BlogPage = ({ blogs, username, handleLogOut }) => (
+export const BlogPage = ({ blogs, setBlogs, username, handleLogOut }) => (
   <div className="pure-u-1">
     <h2>Blogs</h2>
     <div>
@@ -18,7 +18,7 @@ export const BlogPage = ({ blogs, username, handleLogOut }) => (
 
     <hr style={{ margin: '1.5rem 0', border: '0.5px solid #cce4fa' }} />
 
-    <CreateBlog />
+    <CreateBlog blogs={blogs} setBlogs={setBlogs} />
 
     <h2>List of blogs</h2>
     <ul>

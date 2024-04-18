@@ -1,14 +1,18 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-export const CreateBlog = () => {
+export const CreateBlog = (blogs, setBlogs) => {
   const [author, setAuthor] = useState('')
   const [title, setTitle] = useState('')
   const [url, setUrl] = useState('')
 
-  const handleNewBlog = (event) => {
+  const handleNewBlog = async (event) => {
     event.preventDefault()
-    blogService.create({ author, title, url })
+    const newBlog = await blogService.create({ author, title, url })
+    setAuthor('')
+    setTitle('')
+    setUrl('')
+    blogs.setBlogs(blogs.blogs.concat(newBlog))
   }
 
   return (

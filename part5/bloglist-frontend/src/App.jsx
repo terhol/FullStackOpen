@@ -56,7 +56,12 @@ const App = () => {
           setPassword={setPassword}
         />
       ) : (
-        <BlogPage blogs={blogs} username={user.username} handleLogOut={handleLogOut} />
+        <BlogPage
+          blogs={blogs}
+          setBlogs={setBlogs}
+          username={user.username}
+          handleLogOut={handleLogOut}
+        />
       )}
     </div>
   )
