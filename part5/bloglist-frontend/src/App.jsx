@@ -10,6 +10,8 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [message, setMessage] = useState('')
+  const [isError, setIsError] = useState(false)
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
@@ -35,7 +37,11 @@ const App = () => {
       setPassword('')
       setUsername('')
     } catch (exception) {
-      console.log('Wrong credentials.')
+      setIsError(true)
+      setMessage('Username or password is incorrect.')
+      setTimeout(() => {
+        setMessage('')
+      }, 5000)
     }
   }
 
@@ -54,6 +60,8 @@ const App = () => {
           setUsername={setUsername}
           password={password}
           setPassword={setPassword}
+          message={message}
+          isError={isError}
         />
       ) : (
         <BlogPage
@@ -61,6 +69,10 @@ const App = () => {
           setBlogs={setBlogs}
           username={user.username}
           handleLogOut={handleLogOut}
+          message={message}
+          setMessage={setMessage}
+          isError={isError}
+          setIsError={setIsError}
         />
       )}
     </div>

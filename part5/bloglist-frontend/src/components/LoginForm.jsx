@@ -1,6 +1,17 @@
-export const LoginForm = ({ handleLogin, username, setUsername, password, setPassword }) => (
+import { Message } from './Message'
+
+export const LoginForm = ({
+  handleLogin,
+  username,
+  setUsername,
+  password,
+  setPassword,
+  message,
+  isError,
+}) => (
   <div>
     <h2>Log in to application</h2>
+    {message !== '' && <Message message={message} isError={isError} />}
     <form onSubmit={handleLogin} className="pure-form pure-form-stacked">
       <fieldset>
         <input

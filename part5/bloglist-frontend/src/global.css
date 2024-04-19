@@ -27,3 +27,25 @@ ul {
 li + li {
   margin-top: 0.2rem;
 }
+
+.splash-head-positive {
+  padding: 5px;
+  border: 1px solid #349534;
+  margin: 5px 0;
+  background: #c9ffca;
+  color: #008000;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 25px;
+}
+
+.splash-head-negative {
+  padding: 5px;
+  border: 1px solid #cc0000;
+  margin: 5px 0;
+  background: #f7cbca;
+  color: #cc0000;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 25px;
+}

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-export const CreateBlog = (blogs, setBlogs) => {
+export const CreateBlog = ({ blogs, setBlogs, setMessage, setIsError }) => {
   const [author, setAuthor] = useState('')
   const [title, setTitle] = useState('')
   const [url, setUrl] = useState('')
@@ -9,10 +9,16 @@ export const CreateBlog = (blogs, setBlogs) => {
   const handleNewBlog = async (event) => {
     event.preventDefault()
     const newBlog = await blogService.create({ author, title, url })
+    setIsError(false)
+    setMessage(`Successfully added blog ${title} by ${author}.`)
+    setTimeout(() => {
+      setMessage('')
+    }, 5000)
+
     setAuthor('')
     setTitle('')
     setUrl('')
-    blogs.setBlogs(blogs.blogs.concat(newBlog))
+    setBlogs(blogs.concat(newBlog))
   }
 
   return (
