@@ -1,33 +1,31 @@
-/* eslint-disable react/display-name */
-import { forwardRef, useImperativeHandle, useState } from 'react'
+import { useState } from 'react'
 
-export const Togglable = forwardRef((props, refs) => {
+export const Togglable = ({ buttonLabel, toggle, children }) => {
   const [visible, setVisible] = useState(false)
 
-  const hideWhenVisible = { display: visible ? 'none' : '' }
-  const showWhenVisible = { display: visible ? '' : 'none' }
-
   const toggleVisibility = () => {
-    setVisible(!visible)
+    setVisible((previous) => !previous)
   }
 
-  useImperativeHandle(refs, () => {
-    return toggleVisibility
-  })
+  const handleToggle = toggle !== undefined ? toggle.toggle : toggleVisibility
+  const isOpened = toggle !== undefined ? toggle.isVisible : visible
+
+  const hideWhenVisible = { display: isOpened ? 'none' : '' }
+  const showWhenVisible = { display: isOpened ? '' : 'none' }
 
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button className="pure-button pure-button-primary" onClick={toggleVisibility}>
-          {props.buttonLabel}
+        <button className="pure-button pure-button-primary" onClick={() => handleToggle()}>
+          {buttonLabel}
         </button>
       </div>
       <div style={showWhenVisible}>
-        {props.children}
-        <button className="pure-button pure-button-primary" onClick={toggleVisibility}>
+        {children}
+        <button className="pure-button pure-button-primary" onClick={() => handleToggle()}>
           Cancel
         </button>
       </div>
     </div>
   )
-})
+}

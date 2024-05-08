@@ -3,7 +3,7 @@ import { useState } from 'react'
 import blogService from '../services/blogs'
 import { useMessage } from '../contexts/MessageContext.jsx'
 
-export const CreateBlog = ({ blogs, setBlogs }) => {
+export const CreateBlog = ({ blogs, setBlogs, onCreate }) => {
   const [author, setAuthor] = useState('')
   const [title, setTitle] = useState('')
   const [url, setUrl] = useState('')
@@ -14,6 +14,7 @@ export const CreateBlog = ({ blogs, setBlogs }) => {
 
     const newBlog = await blogService.create({ author, title, url })
 
+    onCreate()
     setMessage({ messageText: `Successfully added blog ${title} by ${author}.`, isError: false })
 
     setTimeout(() => {
