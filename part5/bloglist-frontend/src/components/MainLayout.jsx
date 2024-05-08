@@ -38,7 +38,11 @@ export const MainLayout = () => {
           <div className="pure-u-1">
             <h2>Blogs</h2>
             <div className="pure-u-1">
-              <Togglable buttonLabel="Add New Blog" toggle={createBlogToggle}>
+              <Togglable
+                buttonLabelOpen="Add New Blog"
+                buttonLabelClose="Cancel"
+                toggle={createBlogToggle}
+              >
                 <CreateBlog blogs={blogs} setBlogs={setBlogs} onCreate={createBlogToggle.toggle} />
               </Togglable>
             </div>

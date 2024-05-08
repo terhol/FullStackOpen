@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export const Togglable = ({ buttonLabel, toggle, children }) => {
+export const Togglable = ({ buttonLabelOpen, buttonLabelClose, toggle, children }) => {
   const [visible, setVisible] = useState(false)
 
   const toggleVisibility = () => {
@@ -17,13 +17,13 @@ export const Togglable = ({ buttonLabel, toggle, children }) => {
     <div>
       <div style={hideWhenVisible}>
         <button className="pure-button pure-button-primary" onClick={() => handleToggle()}>
-          {buttonLabel}
+          {buttonLabelOpen}
         </button>
       </div>
       <div style={showWhenVisible}>
         {children}
         <button className="pure-button pure-button-primary" onClick={() => handleToggle()}>
-          Cancel
+          {buttonLabelClose}
         </button>
       </div>
     </div>

@@ -1,3 +1,5 @@
+import { Togglable } from './Togglable'
+
 const Blog = ({ blog }) => {
   const blogStyle = {
     paddingTop: 10,
@@ -12,11 +14,22 @@ const Blog = ({ blog }) => {
   return (
     <div style={blogStyle}>
       <a href={blog.url}>{blog.title}</a> by {blog.author}
-      <br />
-      {blog.url}
-      <br />
-      {blog.likes} likes &nbsp;
-      <button className="pure-button pure-button-primary">Like </button>
+      <Togglable buttonLabelOpen="View" buttonLabelClose="Close">
+        {blog.url}
+        <br />
+        {blog.likes} likes &nbsp;
+        <button
+          className="pure-button pure-button-primary"
+          style={{
+            width: 50,
+            height: 25,
+            padding: 0,
+          }}
+        >
+          Like{' '}
+        </button>
+        <br />
+      </Togglable>
     </div>
   )
 }
