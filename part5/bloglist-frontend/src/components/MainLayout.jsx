@@ -7,6 +7,7 @@ import { BlogList } from './BlogList.jsx'
 import blogService from '../services/blogs.js'
 import { useUser } from '../contexts/UserContext.jsx'
 import { useMessage } from '../contexts/MessageContext.jsx'
+import { Togglable } from './Togglable.jsx'
 
 export const MainLayout = () => {
   const [blogs, setBlogs] = useState([])
@@ -20,7 +21,9 @@ export const MainLayout = () => {
   return (
     <div className="pure-g">
       <div className="pure-u-1">
-        {message !== null && <Message message={message.messageText} isError={message.isErrorMessage} />}
+        {message !== null && (
+          <Message message={message.messageText} isError={message.isErrorMessage} />
+        )}
       </div>
       <div className="pure-u-1">
         <UserSection />
@@ -33,7 +36,9 @@ export const MainLayout = () => {
           <div className="pure-u-1">
             <h2>Blogs</h2>
             <div className="pure-u-1">
-              <CreateBlog blogs={blogs} setBlogs={setBlogs} />
+              <Togglable buttonLabel="Add New Blog">
+                <CreateBlog blogs={blogs} setBlogs={setBlogs} />
+              </Togglable>
             </div>
             <div className="pure-u-1">
               <BlogList blogs={blogs} />
