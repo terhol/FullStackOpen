@@ -4,7 +4,7 @@ const Blog = ({ blog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    marginRight: 900,
+    width: '30%',
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
@@ -28,6 +28,7 @@ const Blog = ({ blog }) => {
         >
           Like{' '}
         </button>
+        {console.log({ blog })}
         <br />
       </Togglable>
     </div>
