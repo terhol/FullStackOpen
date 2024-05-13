@@ -1,5 +1,4 @@
 import { Togglable } from './Togglable'
-
 const Blog = ({ blog }) => {
   const blogStyle = {
     paddingTop: 10,
@@ -28,7 +27,8 @@ const Blog = ({ blog }) => {
         >
           Like{' '}
         </button>
-        {console.log({ blog })}
+        <br />
+        {blog.user.name}
         <br />
       </Togglable>
     </div>
