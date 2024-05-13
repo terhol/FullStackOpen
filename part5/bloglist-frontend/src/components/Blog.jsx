@@ -1,4 +1,5 @@
 import { Togglable } from './Togglable'
+import blogService from '../services/blogs'
 const Blog = ({ blog }) => {
   const blogStyle = {
     paddingTop: 10,
@@ -10,6 +11,13 @@ const Blog = ({ blog }) => {
     borderRadius: 10,
   }
 
+  const handleLikeIncrease = async () => {
+    const updatedLikes = blog.likes + 1
+    const updatedBlog = { ...blog, likes: updatedLikes, user: blog.user.id }
+    console.log(updatedBlog)
+    await blogService.update(updatedBlog.id, updatedBlog)
+  }
+
   return (
     <div style={blogStyle}>
       <a href={blog.url}>{blog.title}</a> by {blog.author}
@@ -19,6 +27,7 @@ const Blog = ({ blog }) => {
         {blog.likes} likes &nbsp;
         <button
           className="pure-button pure-button-primary"
+          onClick={handleLikeIncrease}
           style={{
             width: 50,
             height: 25,
