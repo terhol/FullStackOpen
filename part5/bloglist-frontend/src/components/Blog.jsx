@@ -1,5 +1,6 @@
 import { Togglable } from './Togglable'
 import blogService from '../services/blogs'
+import { useBlogs } from '../contexts/BlogsContext'
 const Blog = ({ blog }) => {
   const blogStyle = {
     paddingTop: 10,
@@ -11,11 +12,16 @@ const Blog = ({ blog }) => {
     borderRadius: 10,
   }
 
+  const { blogs, setBlogs } = useBlogs()
+
   const handleLikeIncrease = async () => {
     const updatedLikes = blog.likes + 1
     const updatedBlog = { ...blog, likes: updatedLikes, user: blog.user.id }
-    console.log(updatedBlog)
-    await blogService.update(updatedBlog.id, updatedBlog)
+    const response = await blogService.update(updatedBlog.id, updatedBlog)
+    const updatedBlogs = blogs.map((blog) => (blog.id === response.id ? response : blog))
+    console.log(updatedBlogs)
+
+    setBlogs(updatedBlogs)
   }
 
   return (

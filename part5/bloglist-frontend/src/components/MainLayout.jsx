@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import { Message } from './Message.jsx'
 import { UserSection } from './UserSection.jsx'
@@ -9,12 +9,13 @@ import { useUser } from '../contexts/UserContext.jsx'
 import { useMessage } from '../contexts/MessageContext.jsx'
 import { Togglable } from './Togglable.jsx'
 import { useToggle } from './useToggle.js'
+import { useBlogs } from '../contexts/BlogsContext.jsx'
 
 export const MainLayout = () => {
-  const [blogs, setBlogs] = useState([])
   const { user } = useUser()
   const { message } = useMessage()
   const createBlogToggle = useToggle()
+  const { setBlogs } = useBlogs()
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
@@ -43,11 +44,11 @@ export const MainLayout = () => {
                 buttonLabelClose="Cancel"
                 toggle={createBlogToggle}
               >
-                <CreateBlog blogs={blogs} setBlogs={setBlogs} onCreate={createBlogToggle.toggle} />
+                <CreateBlog onCreate={createBlogToggle.toggle} />
               </Togglable>
             </div>
             <div className="pure-u-1">
-              <BlogList blogs={blogs} />
+              <BlogList />
             </div>
           </div>
         </>

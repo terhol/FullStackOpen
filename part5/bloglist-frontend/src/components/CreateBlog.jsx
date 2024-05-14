@@ -2,12 +2,14 @@ import { useState } from 'react'
 
 import blogService from '../services/blogs'
 import { useMessage } from '../contexts/MessageContext.jsx'
+import { useBlogs } from '../contexts/BlogsContext.jsx'
 
-export const CreateBlog = ({ blogs, setBlogs, onCreate }) => {
+export const CreateBlog = ({ onCreate }) => {
   const [author, setAuthor] = useState('')
   const [title, setTitle] = useState('')
   const [url, setUrl] = useState('')
   const { setMessage } = useMessage()
+  const { blogs, setBlogs } = useBlogs()
 
   const handleNewBlog = async (event) => {
     event.preventDefault()
