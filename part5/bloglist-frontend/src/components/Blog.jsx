@@ -19,7 +19,6 @@ const Blog = ({ blog }) => {
     const updatedBlog = { ...blog, likes: updatedLikes, user: blog.user.id }
     const response = await blogService.update(updatedBlog.id, updatedBlog)
     const updatedBlogs = blogs.map((blog) => (blog.id === response.id ? response : blog))
-    console.log(updatedBlogs)
 
     setBlogs(updatedBlogs)
   }
