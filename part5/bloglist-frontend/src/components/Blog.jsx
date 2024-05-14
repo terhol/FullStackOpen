@@ -42,7 +42,7 @@ const Blog = ({ blog }) => {
           Like{' '}
         </button>
         <br />
-        {blog.user.name}
+        Added by: {blog.user.name}
         <br />
       </Togglable>
     </div>
