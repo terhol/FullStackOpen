@@ -23,6 +23,15 @@ const Blog = ({ blog }) => {
     setBlogs(updatedBlogs)
   }
 
+  const handleRemoveBlog = async () => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author} ?`)) {
+      await blogService.remove(blog.id)
+
+      const updatedBlogs = blogs.filter((currentBlog) => blog.id !== currentBlog.id)
+      setBlogs(updatedBlogs)
+    }
+  }
+
   return (
     <div style={blogStyle}>
       <a href={blog.url}>{blog.title}</a> by {blog.author}
@@ -43,6 +52,15 @@ const Blog = ({ blog }) => {
         </button>
         <br />
         Added by: {blog.user.name}
+        <br />
+        <button
+          className="pure-button pure-button-primary"
+          style={{ backgroundColor: 'red', float: 'right', width: 100, height: 25, padding: 0 }}
+          onClick={handleRemoveBlog}
+        >
+          {' '}
+          Remove blog
+        </button>
         <br />
       </Togglable>
     </div>
