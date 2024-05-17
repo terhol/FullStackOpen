@@ -49,6 +49,10 @@ describe('Blog', () => {
       expect(url).not.toBeInTheDocument()
     })
   })
+  it('should NOT display likes', () => {
+    const likes = screen.queryByText('10 likes')
+    expect(likes).not.toBeInTheDocument()
+  })
 
   describe('when blog post in opened', () => {
     it('should display URL', async () => {
@@ -56,6 +60,12 @@ describe('Blog', () => {
 
       const url = screen.getByText('google.com')
       expect(url).toBeInTheDocument()
+    })
+    it('should display likes', async () => {
+      await openBlog()
+
+      const blogLikes = screen.getByText('10 likes')
+      expect(blogLikes).toBeInTheDocument()
     })
   })
 })
