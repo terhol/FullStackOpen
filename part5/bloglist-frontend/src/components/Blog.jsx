@@ -34,11 +34,11 @@ const Blog = ({ blog }) => {
 
   return (
     <div style={blogStyle}>
-      <a href={blog.url}>{blog.title}</a> by {blog.author}
+      <a href={blog.url}>{blog.title}</a>
+      {` by ${blog.author}`}
       <Togglable buttonLabelOpen="View" buttonLabelClose="Close">
-        {blog.url}
-        <br />
-        {blog.likes} likes &nbsp;
+        <div>{blog.url}</div>
+        <div>{blog.likes} likes</div>
         <button
           className="pure-button pure-button-primary"
           onClick={handleLikeIncrease}
@@ -48,17 +48,14 @@ const Blog = ({ blog }) => {
             padding: 0,
           }}
         >
-          Like{' '}
+          Like
         </button>
-        <br />
-        Added by: {blog.user.name}
-        <br />
+        <div>Added by: {blog.user.name}</div>
         <button
           className="pure-button pure-button-primary"
           style={{ backgroundColor: 'red', float: 'right', width: 100, height: 25, padding: 0 }}
           onClick={handleRemoveBlog}
         >
-          {' '}
           Remove blog
         </button>
         <br />

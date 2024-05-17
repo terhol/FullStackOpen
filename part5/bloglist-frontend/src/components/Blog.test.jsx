@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import Blog from './Blog'
 import { BlogsProvider } from '../contexts/BlogsContext'
+import userEvent from '@testing-library/user-event'
+import { describe } from 'vitest'
 
 const blog = {
   title: 'Title 1',
@@ -12,19 +14,48 @@ const blog = {
   },
 }
 
-test('Correctly renders component and displays correct information', async () => {
+const renderBlog = () => {
   render(
     <BlogsProvider>
       <Blog blog={blog} />
     </BlogsProvider>,
   )
+}
 
-  await screen.findByText('Title 1', { exact: false })
-  await screen.findByText('Author 1', { exact: false })
+const openBlog = async () => {
+  const user = userEvent.setup()
+  const button = screen.getByText('View')
+  await user.click(button)
+}
 
-  const blogUrl = screen.queryByText('google.com')
-  expect(blogUrl).toBeNull()
+describe('Blog', () => {
+  beforeEach(() => {
+    renderBlog()
+  })
 
-  const blogLikes = screen.queryByText('10 likes')
-  expect(blogLikes).toBeNull()
+  it('should display title', () => {
+    const blogTitle = screen.getByText('Title 1')
+    expect(blogTitle).toBeInTheDocument()
+  })
+
+  it('should display author', () => {
+    const blogAuthor = screen.getByText('by Author 1')
+    expect(blogAuthor).toBeInTheDocument()
+  })
+
+  describe('when blog post in closed', () => {
+    it('should NOT display URL', () => {
+      const url = screen.queryByText('google.com')
+      expect(url).not.toBeInTheDocument()
+    })
+  })
+
+  describe('when blog post in opened', () => {
+    it('should display URL', async () => {
+      await openBlog()
+
+      const url = screen.getByText('google.com')
+      expect(url).toBeInTheDocument()
+    })
+  })
 })
